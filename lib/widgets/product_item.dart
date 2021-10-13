@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:shopstop/providers/products.dart';
+import '../providers/product.dart';
 import '../screens/product_detail_screen.dart';
+import 'package:provider/provider.dart';
+
+
 
 class productItem extends StatelessWidget {
   //const productItem({ Key? key }) : super(key: key);
-  final String id;
-  final String title;
-  final String imageUrl;
-  final double price;
-  productItem(this.id, this.title, this.imageUrl, this.price);
+  // final String id;
+  // final String title;
+  // final String imageUrl;
+  // final double price;
+  // productItem(this.id, this.title, this.imageUrl, this.price);
 
   @override
   Widget build(BuildContext context) {
+    final product= Provider.of<Product>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -18,34 +24,48 @@ class productItem extends StatelessWidget {
           elevation: 5,
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(ProductDetail.routeName, arguments: id);
+              Navigator.of(context).pushNamed(ProductDetail.routeName, arguments: product.id);
             },
-            child: Image.network(imageUrl,
+            child: Image.network(product.imageUrl,
                 fit: BoxFit.cover, width: 50, height: 50),
           ),
         ),
         header: Container(
           padding: const EdgeInsets.all(10),
           child: Text(
-            '₹.$price',
+            '₹.${product.price}',
             style: const TextStyle(backgroundColor: Colors.white60),
           ),
         ),
         footer: GridTileBar(
           title: Text(
-            title,
+            product.title,
             textAlign: TextAlign.center,
           ),
           backgroundColor: Colors.black54,
-          leading: IconButton(
-            icon: const Icon(Icons.favorite),
-            onPressed: () {},
-            // ignore: deprecated_member_use
-            color: Theme.of(context).accentColor,
+
+//===================  using consumer ==========================
+
+          leading: Consumer<Product>(
+            builder: (ctx, product, child) =>
+            IconButton(
+              icon: (product.isFavorite? const Icon(Icons.favorite_rounded):const Icon(Icons.favorite_outline_sharp)),
+              onPressed: () {product.toggleFavoriteStatus();},
+              // ignore: deprecated_member_use
+              color: Theme.of(context).accentColor,
+            ),
           ),
+
+//===============================================================
+
           trailing: IconButton(
             icon: const Icon(Icons.shopping_bag),
-            onPressed: () {},
+            onPressed: () {
+              
+            },
+
+
+//=================================================================            
             // ignore: deprecated_member_use
             color: Theme.of(context).accentColor,
           ),
