@@ -13,7 +13,6 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return ChangeNotifierProvider(
       create: (ctx) => Products(),
       child: MaterialApp(
@@ -27,17 +26,10 @@ class MyApp extends StatelessWidget {
           ProductDetail.routeName: (ctx) => ProductDetail(),
         },
       ),
-=======
-    return MaterialApp(
-      title: 'ShopStop',
-      theme: ThemeData(primarySwatch: Colors.green,),
-      home: MyHomePage(),
->>>>>>> 3746ef23a1130118820370c5415e5d38e817ab2f
     );
   }
 }
 
-<<<<<<< HEAD
 // class MyHomePage extends StatelessWidget {
 //   @override 
 //   Widget build(BuildContext context) {
@@ -45,12 +37,3 @@ class MyApp extends StatelessWidget {
 //     body: Center(child: Text('Hi From App'),),);
 //   }
 // }
-=======
-class MyHomePage extends StatelessWidget {
-  @override 
-  Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text('ShopStop'),),
-    body: Center(child: Text('Hi From App'),),);
-  }
-}
->>>>>>> 3746ef23a1130118820370c5415e5d38e817ab2f
