@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/cart.dart';
 class CartItem extends StatelessWidget {
   final String id;
+  final String productId;
   final double price;
   final int quantity;
   final String title;
 
   CartItem(
     this.id,
+    this.productId,
     this.price,
     this.quantity,
     this.title,
@@ -14,19 +18,54 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 15,vertical: 4,),
-      child: Padding(padding: const EdgeInsets.all(5),
-      child: ListTile(
-        leading: CircleAvatar(
-        child: Padding(
-          padding: const EdgeInsets.all(2),
-          child: FittedBox(child: Text('₹ $price')),
-        ),),
-        title: Text(title),
-        subtitle: Text('Total: ₹ ${(price * quantity)}'),
-        trailing: Text('X $quantity'),
-      ),)
+    return Dismissible(
+      key: ValueKey(id),
+      background: Container(
+        color: Theme.of(context).errorColor,
+        child: const Icon(Icons.delete, color: Colors.white, size: 40),
+        alignment:  Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 25),
+        margin: const EdgeInsets.symmetric(horizontal: 15,vertical: 4,),
+      ),
+      direction: DismissDirection.endToStart,
+      confirmDismiss: (DismissDirection direction) async {
+  return await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Confirm"),
+        content: const Text("Are you sure you wish to delete this item?"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text("DELETE")
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text("CANCEL"),
+          ),
+        ],
       );
+    },
+  );
+},
+      onDismissed: (direction) {
+        Provider.of<Cart>(context, listen: false).removeItem(productId,);
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 15,vertical: 4,),
+        child: Padding(padding: const EdgeInsets.all(5),
+        child: ListTile(
+          leading: CircleAvatar(
+          child: Padding(
+            padding: const EdgeInsets.all(2),
+            child: FittedBox(child: Text('₹ $price')),
+          ),),
+          title: Text(title),
+          subtitle: Text('Total: ₹ ${(price * quantity)}'),
+          trailing: Text('X $quantity'),
+        ),)
+        ),
+    );
   }
 }

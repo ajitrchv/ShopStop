@@ -1,7 +1,9 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:shopstop/providers/orders.dart';
 import '../providers/cart.dart';
 import '../widgets/cart_item.dart' as ci;
+import '../providers/products.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -19,7 +21,6 @@ class CartScreen extends StatelessWidget {
             margin: const EdgeInsets.all(20),
             child: Padding(
               padding: const EdgeInsets.all(10),
-              
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -57,23 +58,30 @@ class CartScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 20)),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                          cart.items.values.toList(), 
+                          cart.totalAmount);
+                          cart.clear();
+                    },
                   ),
                 ],
               ),
             ),
           ),
           const SizedBox(height: 10),
-          Expanded(child: ListView.builder(itemCount: cart.itemCount, itemBuilder: (ctx,indx) => 
-   
-            ci.CartItem(
-            cart.items.values.toList()[indx].id,
-            cart.items.values.toList()[indx].price, 
-            cart.items.values.toList()[indx].quantity, 
-            cart.items.values.toList()[indx].title,
-            )
-          
-          ,),),
+          Expanded(
+            child: ListView.builder(
+              itemCount: cart.itemCount,
+              itemBuilder: (ctx, indx) => ci.CartItem(
+                cart.items.values.toList()[indx].id,
+                cart.items.keys.toList()[indx],
+                cart.items.values.toList()[indx].price,
+                cart.items.values.toList()[indx].quantity,
+                cart.items.values.toList()[indx].title,
+              ),
+            ),
+          ),
         ],
       ),
     );
