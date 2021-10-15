@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-<<<<<<< HEAD
-class Product {
-=======
+
 class product {
->>>>>>> 3746ef23a1130118820370c5415e5d38e817ab2f
+
   final String id;
   final String title;
   final String description;
@@ -12,12 +10,12 @@ class product {
   final String imageUrl;
 
   bool isFavorite;
+    void toggleFavoriteStatus(){
+    isFavorite = !isFavorite;
+    notifyListeners();
+  }
 
-<<<<<<< HEAD
-  Product({
-=======
   product({
->>>>>>> 3746ef23a1130118820370c5415e5d38e817ab2f
   required this.id, 
   required this.title, 
   required this.description, 
